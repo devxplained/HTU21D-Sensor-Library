@@ -1,0 +1,22 @@
+# Syntax Coloring Map For HTU21D Sensor Library
+
+# Datatypes (KEYWORD1)
+HTU21D	KEYWORD1
+HTU21DResolution	KEYWORD1
+
+# Methods and Functions (KEYWORD2)
+measure	KEYWORD2
+getTemperature	KEYWORD2
+getHumidity	KEYWORD2
+setResolution	KEYWORD2
+getResolution	KEYWORD2
+reset	KEYWORD2
+begin	KEYWORD2
+
+# Instances (KEYWORD2)
+
+# Constants (LITERAL1)
+RESOLUTION_RH12_T14	LITERAL1
+RESOLUTION_RH8_T12	LITERAL1
+RESOLUTION_RH10_T13	LITERAL1
+RESOLUTION_RH11_T11	LITERAL1
