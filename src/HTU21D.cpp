@@ -15,9 +15,9 @@
 
 #include "HTU21D.h"
 
-static const int HTU21D_DELAY_T[] = {50, 13, 25, 7};
-static const int HTU21D_DELAY_H[] = {16, 3, 5, 8};
-static const float HTU21D_TCoeff = -0.15;
+static const uint8_t HTU21D_DELAY_T[] = {50, 13, 25, 7};
+static const uint8_t HTU21D_DELAY_H[] = {16, 3, 5, 8};
+#define HTU21D_TCoeff -0.15f;
 
 /**
  * Constructor
