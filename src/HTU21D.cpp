@@ -15,7 +15,7 @@
 
 #include "HTU21D.h"
 
-#include <avr/pgmspace.h>;
+#include <avr/pgmspace.h>
 
 static const uint8_t HTU21D_DELAY_T[] PROGMEM = {50, 13, 25, 7};
 static const uint8_t HTU21D_DELAY_H[] PROGMEM = {16, 3, 5, 8};
