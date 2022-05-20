@@ -15,8 +15,8 @@
 
 #include "HTU21D.h"
 
-static const int HTU21D_DELAY_T[] = {50, 13, 25, 7};
-static const int HTU21D_DELAY_H[] = {16, 3, 5, 8};
+static const uint8_t HTU21D_DELAY_T[] = {50, 13, 25, 7};
+static const uint8_t HTU21D_DELAY_H[] = {16, 3, 5, 8};
 static const float HTU21D_TCoeff = -0.15;
 
 /**
@@ -26,7 +26,7 @@ static const float HTU21D_TCoeff = -0.15;
  * @param addr Sensor Address (default 0x40)
  * @param wire TWI bus instance (default Wire)
  */
-HTU21D::HTU21D(int addr, TwoWire& wire) : _addr(addr), _wire(wire), _resolution(RESOLUTION_RH12_T14) {
+HTU21D::HTU21D(uint8_t addr, TwoWire& wire) : _addr(addr), _wire(wire), _resolution(RESOLUTION_RH12_T14) {
   
 }
 
@@ -76,7 +76,7 @@ bool HTU21D::measureHumidity() {
   if(_wire.available() != 3) return false;
   
   uint8_t data[3];
-  for(int i = 0; i < 3; i++) data[i] = _wire.read();
+  for(uint8_t i = 0; i < 3; i++) data[i] = _wire.read();
   if(!checkCRC8(data)) return false;
   
   uint16_t Srh = (data[0] << 8) | (data[1] & 0xFC);

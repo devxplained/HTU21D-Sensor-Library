@@ -23,9 +23,9 @@ enum HTU21DResolution {
  */
 class HTU21D {
 private:
-  static const int HTU21D_ADDR = 0x40;
+  static const uint8_t HTU21D_ADDR = 0x40;
 
-  const int _addr;
+  const uint8_t _addr;
   TwoWire& _wire;
   HTU21DResolution _resolution;
   
@@ -46,7 +46,7 @@ private:
   bool measureHumidity();
   bool checkCRC8(uint8_t data[]);
 public:
-  HTU21D(int addr = HTU21D_ADDR, TwoWire& wire = Wire);
+  HTU21D(uint8_t addr = HTU21D_ADDR, TwoWire& wire = Wire);
   
   bool measure();
   float getTemperature(void) const;
