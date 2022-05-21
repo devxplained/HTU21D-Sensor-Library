@@ -15,8 +15,18 @@
 
 #include "HTU21D.h"
 
+#ifdef __AVR__
+#include <avr/pgmspace.h>
+#endif
+
+#ifdef __AVR__
+static const uint8_t HTU21D_DELAY_T[] PROGMEM = {50, 13, 25, 7};
+static const uint8_t HTU21D_DELAY_H[] PROGMEM = {16, 3, 5, 8};
+#else
 static const uint8_t HTU21D_DELAY_T[] = {50, 13, 25, 7};
 static const uint8_t HTU21D_DELAY_H[] = {16, 3, 5, 8};
+#endif
+
 static const float HTU21D_TCoeff = -0.15;
 
 /**
@@ -49,7 +59,11 @@ bool HTU21D::measureTemperature() {
   _wire.write(TRIGGER_TEMP_MEAS_NH);
   _wire.endTransmission(false); 
   
+#ifdef __AVR__
+  delay(pgm_read_byte_near(HTU21D_DELAY_T + _resolution));
+#else
   delay(HTU21D_DELAY_T[_resolution]);
+#endif
   
   _wire.requestFrom(_addr, 3);
   if(_wire.available() != 3) return false;
@@ -70,7 +84,11 @@ bool HTU21D::measureHumidity() {
   _wire.write(TRIGGER_HUM_MEAS_NH);
   _wire.endTransmission(false); 
   
+#ifdef __AVR__
+  delay(pgm_read_byte_near(HTU21D_DELAY_H + _resolution));
+#else
   delay(HTU21D_DELAY_H[_resolution]);
+#endif
   
   _wire.requestFrom(_addr, 3);
   if(_wire.available() != 3) return false;
