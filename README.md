@@ -10,3 +10,9 @@ Redistribution is possible under the terms of the MIT license.
 
 # References
 Manufacturer Page: [https://www.te.com/deu-de/product-CAT-HSC0004.html](https://www.te.com/deu-de/product-CAT-HSC0004.html)
+
+# Platform Specifics
+For ESP32 boards the i2c communication pattern deviates from the datasheet.
+A delay during the i2c communication is not possible on the ESP32. For this reason the data is queried in two operations.
+
+If your target platform has i2c communication problems and requires similar quirks please open an issue.

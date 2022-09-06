@@ -15,6 +15,10 @@
 
 #include "HTU21D.h"
 
+#if defined(ESP_PLATFORM) && not defined(ESP8266)
+#define I2C_DELAY_NOT_SUPPORTED 1
+#endif
+
 static const uint8_t HTU21D_DELAY_T[] = {50, 13, 25, 7};
 static const uint8_t HTU21D_DELAY_H[] = {16, 3, 5, 8};
 static const float HTU21D_TCoeff = -0.15;
@@ -47,11 +51,15 @@ bool HTU21D::measureTemperature() {
   /* Measure temperature */
   _wire.beginTransmission(_addr);
   _wire.write(TRIGGER_TEMP_MEAS_NH);
-  _wire.endTransmission(false); 
+#ifndef I2C_DELAY_NOT_SUPPORTED
+  _wire.endTransmission(false);
+#else
+  _wire.endTransmission(true);
+#endif
   
   delay(HTU21D_DELAY_T[_resolution]);
   
-  _wire.requestFrom(_addr, 3);
+  _wire.requestFrom(_addr, static_cast<uint8_t>(3));
   if(_wire.available() != 3) return false;
   
   uint8_t data[3];
@@ -68,11 +76,15 @@ bool HTU21D::measureHumidity() {
   /* Measure humidity */
   _wire.beginTransmission(_addr);
   _wire.write(TRIGGER_HUM_MEAS_NH);
-  _wire.endTransmission(false); 
+#ifndef I2C_DELAY_NOT_SUPPORTED
+  _wire.endTransmission(false);
+#else
+  _wire.endTransmission(true);
+#endif
   
   delay(HTU21D_DELAY_H[_resolution]);
   
-  _wire.requestFrom(_addr, 3);
+  _wire.requestFrom(_addr, static_cast<uint8_t>(3));
   if(_wire.available() != 3) return false;
   
   uint8_t data[3];
@@ -112,7 +124,7 @@ void HTU21D::setResolution(HTU21DResolution resolution) {
   _wire.beginTransmission(_addr);
   _wire.write(WRITE_USER_REG);
   _wire.write((resolution & 0x01) | ((resolution & 0x02) << 6) | 0x02);
-  _wire.endTransmission(); 
+  _wire.endTransmission();
   
   _resolution = resolution;
 }
@@ -142,14 +154,14 @@ bool HTU21D::begin() {
 bool HTU21D::reset() {
   _wire.beginTransmission(_addr);
   _wire.write(SOFT_RESET);
-  _wire.endTransmission(); 
+  _wire.endTransmission();
   
   delay(15);
   
   _wire.beginTransmission(_addr);
   _wire.write(READ_USER_REG);
-  _wire.endTransmission(false); 
-  _wire.requestFrom(_addr, 1);
+  _wire.endTransmission(false);
+  _wire.requestFrom(_addr, static_cast<uint8_t>(3));
   if(_wire.available() != 1) return false;
   if(_wire.read() != 0x02) return false;
   
